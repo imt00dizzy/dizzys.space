@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>lucys.space</title>
+<title>dizzys.space</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -233,7 +233,7 @@
     margin-top: 40px;
     text-align: left;
   }
-
+dizzys
   .about-card h2 {
     text-transform: lowercase; 
   }
@@ -383,7 +383,7 @@ function onMouseMove(e) {
     const dy = e.movementY || 0;
     camRotY -= dx * 0.001;
     camRotX -= dy * 0.001;
-}
+}lucys
 
 function animate() {
     requestAnimationFrame(animate);
@@ -510,7 +510,7 @@ function goMainSite() {
         document.body.classList.add('active-site');
         
         loadPage('home');
-        
+        lucys
         gsap.to(musicPopup, { bottom: "30px", right: "30px", duration: 1 });
     }, 1800);
 }
@@ -533,7 +533,7 @@ function timeToSec(str) {
     if(!str) return 0;
     const p = str.replace(',', '.').split(':');
     return (parseFloat(p[0])*3600) + (parseFloat(p[1])*60) + parseFloat(p[2]);
-}
+}lucys
 
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
