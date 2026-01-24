@@ -233,7 +233,7 @@
     margin-top: 40px;
     text-align: left;
   }
-dizzys
+
   .about-card h2 {
     text-transform: lowercase; 
   }
@@ -272,6 +272,59 @@ dizzys
     pointer-events: none;
     z-index: 200;
   }
+
+  .stream-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 300;
+  }
+
+  .stream-content {
+    position: relative;
+    background: #000;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .close-btn:hover {
+    background: rgba(255,255,255,0.4);
+  }
+
+  .social-links a {
+    display: block;
+    color: var(--accent);
+    text-decoration: none;
+    margin: 10px 0;
+    font-size: 1.1rem;
+  }
+
+  .social-links a:hover {
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
@@ -290,15 +343,23 @@ dizzys
   </div>
 </div>
 
-<audio id="music" src="makkafakemink.mp3" loop></audio>
+<audio id="music" src="bemine.mp3" loop></audio>
 
 <div class="flash-overlay"></div>
+
+<div id="streamOverlay" class="stream-overlay">
+    <div class="stream-content">
+        <button class="close-btn" onclick="hideStreamOverlay()">×</button>
+        <iframe src="https://player.twitch.tv/?channel=imt00dizzy&parent=dizzys.space" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620"></iframe>
+    </div>
+</div>
 
 <div id="mainContent">
   <nav>
     <a href="#" class="nav-link active" data-page="home">home</a>
     <a href="#" class="nav-link" data-page="projects">projects</a>
     <a href="#" class="nav-link" data-page="blog">blog</a>
+    <a href="#" class="nav-link" data-page="socials">socials</a>
   </nav>
 
   <div id="dynamicContent" class="content-container"></div>
@@ -313,7 +374,7 @@ let isDragging = false;
 let mouseX = 0, mouseY = 0;
 let camRotX = 0, camRotY = 0;
 
-const STAR_COUNT = 4000;
+const dizzySTAR_COUNT = 4000;
 const BOUNDARY_Z = 2000;
 
 function initThree() {
@@ -337,7 +398,7 @@ function initThree() {
         new THREE.Color(0xaa88ff)
     ];
 
-    for(let i=0; i<STAR_COUNT; i++) {
+    for(let i=0; i<dizzySTAR_COUNT; i++) {
         const x = (Math.random() - 0.5) * 3000;
         const y = (Math.random() - 0.5) * 3000;
         const z = (Math.random() - 0.5) * BOUNDARY_Z;
@@ -383,7 +444,7 @@ function onMouseMove(e) {
     const dy = e.movementY || 0;
     camRotY -= dx * 0.001;
     camRotX -= dy * 0.001;
-}lucys
+}
 
 function animate() {
     requestAnimationFrame(animate);
@@ -392,7 +453,7 @@ function animate() {
 
     const positions = starGeo.attributes.position.array;
     
-    for(let i=0; i < STAR_COUNT; i++) {
+    for(let i=0; i < dizzySTAR_COUNT; i++) {
         const i3 = i * 6; 
 
         let x = positions[i3];
@@ -470,10 +531,6 @@ async function startExperience() {
 
     music.addEventListener('timeupdate', updateLyrics);
 
-    setTimeout(() => {
-        if(!isMainSiteActive) skipBtn.classList.add('visible');
-    }, 3000);
-
     const lastTime = lyrics.length > 0 ? lyrics[lyrics.length-1].end : 10;
     autoSkipTimer = setTimeout(() => {
         if(!isMainSiteActive) goMainSite();
@@ -485,6 +542,11 @@ function updateLyrics() {
     const t = music.currentTime;
     const line = lyrics.find(l => t >= l.start && t <= l.end);
     lyricsDiv.innerText = line ? line.text : '';
+    if (t >= 13.089 && t <= 15.996) {
+        skipBtn.classList.add('visible');
+    } else {
+        skipBtn.classList.remove('visible');
+    }
 }
 
 function goMainSite() {
@@ -510,7 +572,7 @@ function goMainSite() {
         document.body.classList.add('active-site');
         
         loadPage('home');
-        lucys
+        
         gsap.to(musicPopup, { bottom: "30px", right: "30px", duration: 1 });
     }, 1800);
 }
@@ -533,7 +595,7 @@ function timeToSec(str) {
     if(!str) return 0;
     const p = str.replace(',', '.').split(':');
     return (parseFloat(p[0])*3600) + (parseFloat(p[1])*60) + parseFloat(p[2]);
-}lucys
+}
 
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
@@ -556,10 +618,10 @@ async function loadPage(page) {
         if(page === 'home') {
             container.innerHTML = `
                 <div class="hero-section">
-                    <h1 class="hero-title">lucys.space</h1> <p class="hero-subtitle">beginner fullstack developer</p> </div>
+                    <h1 class="hero-title">dizzys.space</h1> <p class="hero-subtitle">content creator/twitch streamer/developer</p> </div>
                 <div class="about-card">
                     <h2>about me</h2> <p>
-                        im lucy! im a 15 year old developer, i mainly make websites but ive been learning fullstack development recently. im from the new york suburbs & im also a musician part time. i love making cool projects and experimenting with new tech. you can check out my software i make for linux distro's or see my blog to get to know me more!
+                        im dizzy! im a twitch streamer, software & web developer! find my socials in my socials area on this site.
                     </p>
                     
                 </div>
@@ -570,6 +632,15 @@ async function loadPage(page) {
         } else if(page === 'blog') {
             container.innerHTML = `<h2>latest entries</h2><div id="blog-grid" class="project-grid">loading...</div>`;
             await fetchBlog();
+        } else if(page === 'socials') {
+            container.innerHTML = `
+                <h2>socials</h2>
+                <p>find me online:</p>
+                <div class="social-links">
+                    <a href="#" onclick="showStreamOverlay()">twitch.tv/imt00dizzy</a>
+                    <!-- Add other social links here if needed -->
+                </div>
+            `;
         }
 
         container.classList.add('fade-in');
@@ -579,7 +650,7 @@ async function loadPage(page) {
 async function fetchProjects() {
     const grid = document.getElementById('repo-grid');
     try {
-        const res = await fetch('https://api.github.com/users/lucy407/repos?sort=updated&per_page=6');
+        const res = await fetch('https://api.github.com/users/imt00dizzy/repos?sort=updated&per_page=6');
         const data = await res.json();
         grid.innerHTML = '';
         data.forEach(repo => {
@@ -610,6 +681,14 @@ async function fetchBlog() {
     } catch(e) {
         grid.innerHTML = 'failed to load blog posts.';
     }
+}
+
+function showStreamOverlay() {
+    document.getElementById('streamOverlay').style.display = 'flex';
+}
+
+function hideStreamOverlay() {
+    document.getElementById('streamOverlay').style.display = 'none';
 }
 
 </script>
